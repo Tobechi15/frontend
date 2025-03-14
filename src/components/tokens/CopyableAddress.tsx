@@ -15,7 +15,7 @@ export function CopyableAddress({
   const truncateAddress = (addr: string) => {
     return `${addr.slice(0, 6)}...${addr.slice(-4)}`;
   };
-  return <div className="flex items-center space-x-2">
+  return <div className="items-center space-x">
       <span className="font-mono text-sm text-slate-600 dark:text-slate-300">
         {truncateAddress(address)}
       </span>
