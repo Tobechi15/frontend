@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { WalletIcon, CoinsIcon, ArrowLeftRightIcon } from "lucide-react";
+import { WalletIcon, CoinsIcon, ArrowLeftRightIcon, DollarSignIcon} from "lucide-react";
 import { StatusIndicator } from "../components/common/StatusIndicator";
 import { DataCard } from "../components/common/DataCard";
 import { CopyableAddress } from "../components/tokens/CopyableAddress";
@@ -22,19 +22,23 @@ export function Dashboard() {
   const [transactions24h, setTransactions24h] = useState<number>(0);
   const [profitChange24h, setProfitChange24h] = useState<number>(0);
   const [profit24h, setProfit24h] = useState<number>(0);
+  const [numtoken, setTokens] = useState<number>(0);
+
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [transactionsRes, balanceRes] = await Promise.all([
+        const [transactionsRes, balanceRes, tokenres] = await Promise.all([
           fetch("https://arb-bot-rlot.onrender.com/transactions"),
           fetch("https://arb-bot-rlot.onrender.com/bal"),
+          fetch("https://arb-bot-rlot.onrender.com/tokens"),
         ]);
 
-        if (!transactionsRes.ok || !balanceRes.ok) {
+
+        if (!transactionsRes.ok || !balanceRes.ok || !tokenres) {
           throw new Error("Failed to fetch data");
         }
-
+        const tokenData = await tokenres.json()
         const transactionsData = await transactionsRes.json();
         const balanceData = await balanceRes.json();
 
@@ -56,6 +60,9 @@ export function Dashboard() {
         setTransactions(processedTransactions.slice(0, 5));
 
         setBalance(balanceData ? balanceData.toString() : "N/A");
+
+        const tokh = tokenData.length;
+        setTokens(tokh ? tokh.toString(): "N/A");
 
         // Calculate last 24h stats
         calculate24hStats(processedTransactions);
@@ -103,7 +110,8 @@ export function Dashboard() {
     // Update state
     setTransactions24h(last24hTransactions.length);
     setProfitChange24h(profitChange);
-    setProfit24h(totalProfit24h);
+    const roundedProfit = Number(totalProfit24h.toFixed(2));
+    setProfit24h(roundedProfit);
   };
 
 
@@ -113,18 +121,19 @@ export function Dashboard() {
         <h1 className="text-2xl font-bold dark:text-white">Dashboard</h1>
         <StatusIndicator isRunning={isRunning} onToggle={() => setIsRunning(!isRunning)} />
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <DataCard
           title="Wallet Balance"
           value={`${balance} BNB`}
           icon={<WalletIcon className="w-5 h-5" />}
           change={{ value: 2.5, isPositive: true }}
         />
-        <DataCard title="Tokens Fetched" value="1,234" icon={<CoinsIcon className="w-5 h-5" />} />
+        <DataCard title="Tokens Fetched" value={numtoken} icon={<CoinsIcon className="w-5 h-5" />} />
+        <DataCard title="24h Transactions" value={transactions24h} icon={<ArrowLeftRightIcon className="w-5 h-5" />} />
         <DataCard
-          title="24h Transactions"
+          title="24h Profit"
           value={`${profit24h} BNB`}
-          icon={<ArrowLeftRightIcon className="w-5 h-5" />}
+          icon={<DollarSignIcon className="w-5 h-5" />}
           change={{
             value: Math.abs(profitChange24h),
             isPositive: profitChange24h >= 0,

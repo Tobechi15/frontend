@@ -1,49 +1,87 @@
-import React, { useState } from "react";
-import { HomeIcon, CoinsIcon, LineChartIcon, ArrowLeftRightIcon, SettingsIcon, LogOutIcon, MenuIcon, XIcon } from "lucide-react";
+import React, { useState, useEffect, useRef } from "react";
+import {
+  HomeIcon,
+  CoinsIcon,
+  LineChartIcon,
+  ArrowLeftRightIcon,
+  SettingsIcon,
+  LogOutIcon,
+  MenuIcon,
+  XIcon,
+} from "lucide-react";
 import { useTheme } from "../../context/ThemeContext";
 import { Link } from "react-router-dom";
 
 export function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState("Dashboard");
-  const {
-    ThemeToggle
-  } = useTheme();
-  const navItems = [{
-    icon: HomeIcon,
-    label: "Dashboard",
-    path: "/"
-  }, {
-    icon: CoinsIcon,
-    label: "Tokens",
-    path: "/tokens"
-  }, {
-    icon: LineChartIcon,
-    label: "Charts",
-    path: "/charts"
-  }, {
-    icon: ArrowLeftRightIcon,
-    label: "Transactions",
-    path: "/transactions"
-  }, {
-    icon: SettingsIcon,
-    label: "Settings",
-    path: "/settings"
-  }];
-  return <>
+  const sidebarRef = useRef<HTMLDivElement>(null);
+  const { ThemeToggle } = useTheme();
+
+  const navItems = [
+    { icon: HomeIcon, label: "Dashboard", path: "/" },
+    { icon: CoinsIcon, label: "Tokens", path: "/tokens" },
+    { icon: LineChartIcon, label: "Charts", path: "/charts" },
+    { icon: ArrowLeftRightIcon, label: "Transactions", path: "/transactions" },
+    { icon: SettingsIcon, label: "Settings", path: "/settings" },
+  ];
+
+  // Tap outside to close
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        sidebarRef.current &&
+        !sidebarRef.current.contains(event.target as Node) &&
+        isMobileOpen
+      ) {
+        setIsMobileOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isMobileOpen]);
+
+  // Swipe to open
+  useEffect(() => {
+    let touchStartX = 0;
+
+    const handleTouchStart = (event: TouchEvent) => {
+      touchStartX = event.touches[0].clientX;
+    };
+
+    const handleTouchEnd = (event: TouchEvent) => {
+      const touchEndX = event.changedTouches[0].clientX;
+      if (touchStartX < 50 && touchEndX > 100) {
+        setIsMobileOpen(true);
+      }
+    };
+
+    document.addEventListener("touchstart", handleTouchStart);
+    document.addEventListener("touchend", handleTouchEnd);
+    return () => {
+      document.removeEventListener("touchstart", handleTouchStart);
+      document.removeEventListener("touchend", handleTouchEnd);
+    };
+  }, []);
+
+  return (
+    <>
       {/* Mobile Menu Button */}
-      <button onClick={() => setIsMobileOpen(!isMobileOpen)} className="fixed top-4 left-4 z-50 lg:hidden p-2 rounded-md bg-white dark:bg-slate-800 text-slate-900 dark:text-white">
+      <button
+        onClick={() => setIsMobileOpen(!isMobileOpen)}
+        className="fixed top-4 left-4 z-50 lg:hidden p-2 rounded-md bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
+      >
         {isMobileOpen ? <XIcon /> : <MenuIcon />}
       </button>
+
       {/* Sidebar */}
-      <aside className={`
-          fixed top-0 left-0 h-full bg-white dark:bg-slate-800 text-slate-900 dark:text-white transition-all duration-300
+      <aside
+        ref={sidebarRef}
+        className={`fixed top-0 left-0 h-full bg-white dark:bg-slate-800 text-slate-900 dark:text-white transition-all duration-300
           ${isCollapsed ? "w-16" : "w-64"}
           ${isMobileOpen ? "translate-x-0" : "-translate-x-full"}
-          lg:translate-x-0
-          z-40 border-r border-slate-200 dark:border-slate-700
-        `}>
+          lg:translate-x-0 z-40 border-r border-slate-200 dark:border-slate-700`}
+      >
         <div className="flex flex-col h-full">
           <div className="p-4 border-b border-slate-200 dark:border-slate-700">
             <div className="flex items-center justify-between">
@@ -54,10 +92,16 @@ export function Sidebar() {
             </div>
           </div>
           <nav className="flex-1 py-4">
-            {navItems.map(item => <Link onClick={() => setActiveTab(item.label)} key={item.label} to={item.path} className={`${activeTab === item.label ? "bg-gray-200 dark:bg-slate-900" : ""} flex items-center px-4 py-3 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white transition-colors`}>
+            {navItems.map((item) => (
+              <Link
+                key={item.label}
+                to={item.path}
+                className="flex items-center px-4 py-3 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white transition-colors"
+              >
                 <item.icon className="w-5 h-5" />
                 {!isCollapsed && <span className="ml-3">{item.label}</span>}
-              </Link>)}
+              </Link>
+            ))}
           </nav>
           <div className="p-4 border-t border-slate-200 dark:border-slate-700">
             <button className="flex items-center w-full px-4 py-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white rounded-md transition-colors">
@@ -67,5 +111,6 @@ export function Sidebar() {
           </div>
         </div>
       </aside>
-    </>;
+    </>
+  );
 }
