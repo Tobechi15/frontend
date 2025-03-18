@@ -21,6 +21,7 @@ export function Dashboard() {
   const [balance, setBalance] = useState<string>("Loading...");
   const [transactions24h, setTransactions24h] = useState<number>(0);
   const [profitChange24h, setProfitChange24h] = useState<number>(0);
+  const [profit24h, setProfit24h] = useState<number>(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -71,24 +72,40 @@ export function Dashboard() {
   /** Function to calculate transactions in last 24 hours and profit change */
   const calculate24hStats = (allTransactions: Transaction[]) => {
     const now = Date.now();
-    const last24hTransactions = allTransactions.filter(
-      (tx) => now - tx.timestamp <= 24 * 60 * 60 * 1000
-    );
+    const oneDayMs = 24 * 60 * 60 * 1000;
 
-    const totalProfit24h = last24hTransactions.reduce((sum, tx) => sum + tx.profit, 0);
-    const totalProfitYesterday = allTransactions
-      .filter((tx) => now - tx.timestamp > 24 * 60 * 60 * 1000 && now - tx.timestamp <= 48 * 60 * 60 * 1000)
-      .reduce((sum, tx) => sum + tx.profit, 0);
+    console.log("Current Time (ms):", now);
 
-    const profitChange = totalProfitYesterday
-      ? ((totalProfit24h - totalProfitYesterday) / Math.abs(totalProfitYesterday)) * 100
-      : totalProfit24h > 0
-      ? 100
-      : 0;
+    const last24hTransactions = allTransactions.filter((tx) => {
+      const txTime = new Date(tx.timestamp).getTime(); // Convert ISO date to milliseconds
+      console.log(`Tx Time: ${txTime}, Within 24h: ${now - txTime <= oneDayMs}`);
+      return now - txTime <= oneDayMs;
+    });
 
+    const last48hTransactions = allTransactions.filter((tx) => {
+      const txTime = new Date(tx.timestamp).getTime();
+      return now - txTime > oneDayMs && now - txTime <= 2 * oneDayMs;
+    });
+
+    // Sum up profits
+    const totalProfit24h = last24hTransactions.reduce((sum, tx) => sum + (tx.profitBnb || 0), 0);
+    const totalProfitYesterday = last48hTransactions.reduce((sum, tx) => sum + (tx.profitBnb || 0), 0);
+
+    // Calculate profit change percentage
+    const profitChange =
+      totalProfitYesterday !== 0
+        ? ((totalProfit24h - totalProfitYesterday) / Math.abs(totalProfitYesterday)) * 100
+        : totalProfit24h > 0
+          ? 100
+          : 0;
+
+
+    // Update state
     setTransactions24h(last24hTransactions.length);
     setProfitChange24h(profitChange);
+    setProfit24h(totalProfit24h);
   };
+
 
   return (
     <div className="space-y-6">
@@ -99,14 +116,14 @@ export function Dashboard() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <DataCard
           title="Wallet Balance"
-          value={`$${balance}`}
+          value={`${balance} BNB`}
           icon={<WalletIcon className="w-5 h-5" />}
           change={{ value: 2.5, isPositive: true }}
         />
         <DataCard title="Tokens Fetched" value="1,234" icon={<CoinsIcon className="w-5 h-5" />} />
         <DataCard
           title="24h Transactions"
-          value={transactions24h.toString()}
+          value={`${profit24h} BNB`}
           icon={<ArrowLeftRightIcon className="w-5 h-5" />}
           change={{
             value: Math.abs(profitChange24h),
@@ -133,7 +150,7 @@ export function Dashboard() {
               {transactions.map((tx) => (
                 <tr key={tx.id} className="border-t border-slate-200 dark:border-slate-700">
                   <td className="py-4">{tx.tokenSymbol}</td>
-                  <td className="py-4"><CopyableAddress address={tx.tokenName}/></td>
+                  <td className="py-4"><CopyableAddress address={tx.tokenName} /></td>
                   <td className="text-right">${tx.buyPrice.toFixed(2)}</td>
                   <td className="text-right">${tx.sellPrice.toFixed(2)}</td>
                   <td className={`text-right ${tx.profit >= 0 ? "text-green-500" : "text-red-500"}`}>
@@ -157,7 +174,7 @@ export function Dashboard() {
               </div>
               <div className="grid grid-cols-2 gap-2 text-sm">
                 <div className="text-slate-500">Token Name</div>
-                <div className="text-right dark:text-white"><CopyableAddress address={tx.tokenName}/></div>
+                <div className="text-right dark:text-white"><CopyableAddress address={tx.tokenName} /></div>
                 <div className="text-slate-500">Buy Price</div>
                 <div className="text-right dark:text-white">${tx.buyPrice.toFixed(2)}</div>
                 <div className="text-slate-500">Sell Price</div>
