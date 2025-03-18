@@ -18,7 +18,7 @@ export function App() {
       <Router>
         <div className="flex min-h-screen bg-slate-100 dark:bg-slate-900 transition-colors">
           <Sidebar />
-          <main className="flex-1 ml-0 lg:ml-64 p-6">
+          <main className="flex-1 ml-0 mt-16 lg:ml-64 p-6">
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/transactions" element={<Transactions />} />

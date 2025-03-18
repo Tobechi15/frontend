@@ -66,13 +66,23 @@ export function Sidebar() {
 
   return (
     <>
-      {/* Mobile Menu Button */}
-      <button
-        onClick={() => setIsMobileOpen(!isMobileOpen)}
-        className="fixed top-4 left-4 z-50 lg:hidden p-2 rounded-md bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
-      >
-        {isMobileOpen ? <XIcon /> : <MenuIcon />}
-      </button>
+
+
+      {/* Navbar - Always Visible */}
+      <nav className="fixed top-0 left-0 right-0 h-16 bg-white dark:bg-slate-800 text-slate-900 dark:text-white border-b border-gray-200 dark:border-gray-700 z-[60]">
+        <div className="h-full flex items-center px-4 sm:px-6">
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setIsMobileOpen(!isMobileOpen)}
+            className="sm:hidden p-2 rounded-full hover:bg-gray-100 z-[70]"
+          >
+            {isMobileOpen ? <XIcon /> : <MenuIcon />}
+          </button>
+
+          {/* Logo */}
+          <h1 className="text-lg sm:text-xl font-bold pl-6 text-blue-600">Arbitrage Bot</h1>
+        </div>
+      </nav>
 
       {/* Sidebar */}
       <aside
