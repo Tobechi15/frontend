@@ -61,7 +61,8 @@ export function Dashboard() {
 
         setBalance(balanceData ? balanceData.toString() : "N/A");
 
-        const tokh = tokenData.length;
+        const ton = tokenData.token
+        const tokh = ton.length;
         setTokens(tokh ? tokh.toString(): "N/A");
 
         // Calculate last 24h stats
