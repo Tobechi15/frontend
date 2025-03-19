@@ -61,7 +61,7 @@ export function Dashboard() {
 
         setBalance(balanceData ? balanceData.toString() : "N/A");
 
-        const ton = tokenData.token
+        const ton = tokenData.tokens;
         const tokh = ton.length;
         setTokens(tokh ? tokh.toString(): "N/A");
 
