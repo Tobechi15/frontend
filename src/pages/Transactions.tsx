@@ -100,9 +100,9 @@ export function Transactions() {
 
       {/* Pagination Controls */}
       <div className="flex justify-center space-x-4 mt-4">
-        <button disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)} className="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-lg disabled:opacity-50">Previous</button>
-        <span className="px-4 py-2">Page {currentPage} of {totalPages}</span>
-        <button disabled={currentPage === totalPages} onClick={() => setCurrentPage(currentPage + 1)} className="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-lg disabled:opacity-50">Next</button>
+        <button disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)} className="px-4 py-2 bg-gray-200 dark:bg-gray-700 dark:text-white rounded-lg disabled:opacity-50">Previous</button>
+        <span className="px-4 py-2 dark:text-white">Page {currentPage} of {totalPages}</span>
+        <button disabled={currentPage === totalPages} onClick={() => setCurrentPage(currentPage + 1)} className="px-4 py-2 bg-gray-200 dark:bg-gray-700 dark:text-white rounded-lg disabled:opacity-50">Next</button>
       </div>
     </div>
   );

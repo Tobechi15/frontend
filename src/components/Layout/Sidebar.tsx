@@ -66,11 +66,9 @@ export function Sidebar() {
 
   return (
     <>
-
-
       {/* Navbar - Always Visible */}
       <nav className="fixed top-0 left-0 right-0 h-16 bg-white dark:bg-slate-800 text-slate-900 dark:text-white border-b border-gray-200 dark:border-gray-700 z-[60]">
-        <div className="h-full flex items-center px-4 sm:px-6">
+        <div className="h-full flex items-center justify-between  px-4 sm:px-6">
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMobileOpen(!isMobileOpen)}
@@ -81,6 +79,10 @@ export function Sidebar() {
 
           {/* Logo */}
           <h1 className="text-lg sm:text-xl font-bold pl-6 text-blue-600">Arbitrage Bot</h1>
+
+          <div className="sm:flex right-0 items-center space-x-4">
+            <ThemeToggle />
+          </div>
         </div>
       </nav>
 

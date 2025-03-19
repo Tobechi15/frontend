@@ -13,8 +13,14 @@ interface Token {
   symbol: string;
 }
 
+interface ApiResponse {
+  tokens: Token[];
+  time: string; // Adjust type if needed (e.g., Date)
+}
+
 export function Tokens() {
   const [tokens, setTokens] = useState<Token[]>([]);
+  const [FetchTime, setFetchTime] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -24,8 +30,12 @@ export function Tokens() {
       try {
         const response = await fetch("https://arb-bot-rlot.onrender.com/tokens");
         if (!response.ok) throw new Error("Failed to fetch tokens");
-        const data: Token[] = await response.json();
-        setTokens(data);
+    
+        const data: ApiResponse = await response.json();
+        
+        setTokens(data.tokens);  // Extract tokens
+        setFetchTime(data.time); // Store fetch time separately
+    
       } catch (err) {
         setError((err as Error).message);
       } finally {
@@ -46,7 +56,7 @@ export function Tokens() {
     <div className="space-y-6">
       <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
         <h1 className="text-2xl font-bold dark:text-white">Tokens</h1>
-        <CountdownTimer />
+        <CountdownTimer tokenTime={FetchTime} />
       </div>
       <SearchBar value={searchQuery} onChange={setSearchQuery} placeholder="Search tokens..." />
 
