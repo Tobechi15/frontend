@@ -48,7 +48,7 @@ export function Transactions() {
         <FilterPanel onDateRangeChange={(start, end) => console.log(start, end)} onProfitRangeChange={(min, max) => console.log(min, max)} onTokenChange={token => console.log(token)} />
       </div>
 
-      <DataCard title="Total Profit" value={totalProfit} icon={<CoinsIcon className="w-5 h-5" />} />
+      <DataCard title="Total Profit" value={`${totalProfit} BNB`} icon={<CoinsIcon className="w-5 h-5" />} />
       <DataCard title="Total Transactions" value={total} icon={<ArrowLeftRightIcon className="w-5 h-5" />} />
 
       {/* Desktop Table View */}
