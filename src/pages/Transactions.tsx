@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { SearchBar } from "../components/common/SearchBar";
 import { FilterPanel } from "../components/transactions/FilterPanel";
-import { WalletIcon, CoinsIcon, ArrowLeftRightIcon, DollarSignIcon} from "lucide-react";
+import { WalletIcon, CoinsIcon, ArrowLeftRightIcon, DollarSignIcon } from "lucide-react";
 import { CopyableAddress } from "../components/tokens/CopyableAddress";
 import { DataCard } from "../components/common/DataCard";
 
@@ -48,9 +48,10 @@ export function Transactions() {
         <FilterPanel onDateRangeChange={(start, end) => console.log(start, end)} onProfitRangeChange={(min, max) => console.log(min, max)} onTokenChange={token => console.log(token)} />
       </div>
 
-      <DataCard title="Total Profit" value={`${totalProfit} BNB`} icon={<CoinsIcon className="w-5 h-5" />} />
-      <DataCard title="Total Transactions" value={total} icon={<ArrowLeftRightIcon className="w-5 h-5" />} />
-
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
+        <DataCard title="Total Profit" value={`${totalProfit} BNB`} icon={<CoinsIcon className="w-5 h-5" />} />
+        <DataCard title="Total Transactions" value={total} icon={<ArrowLeftRightIcon className="w-5 h-5" />} />
+      </div>
       {/* Desktop Table View */}
       <div className="bg-white dark:border-slate-700 dark:bg-slate-800 rounded-lg p-2 border border-slate-200 hidden md:block overflow-x-auto">
         <table className="w-full">

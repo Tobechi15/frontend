@@ -109,6 +109,7 @@ export function Sidebar() {
                 key={item.label}
                 to={item.path}
                 className="flex items-center px-4 py-3 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white transition-colors"
+                onClick={() => setIsMobileOpen(!isMobileOpen)}
               >
                 <item.icon className="w-5 h-5" />
                 {!isCollapsed && <span className="ml-3">{item.label}</span>}

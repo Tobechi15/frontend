@@ -127,7 +127,7 @@ export function Dashboard() {
         <>
           <div className="flex flex-col lg:flex-row justify-between gap-4">
             <h1 className="text-2xl font-bold dark:text-white">Dashboard</h1>
-            <StatusIndicator isRunning={isRunning} onToggle={() => setIsRunning(!isRunning)} />
+            <StatusIndicator isRunning={isRunning} setIsRunning={setIsRunning} />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -211,7 +211,7 @@ export function Dashboard() {
           </div>
         </>
       ) : (
-        <StatusIndicator isRunning={isRunning} onToggle={() => setIsRunning(!isRunning)} />
+        <StatusIndicator isRunning={isRunning} setIsRunning={setIsRunning} />
       )}
 
     </div>

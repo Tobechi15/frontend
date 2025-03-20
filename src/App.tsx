@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Login } from "./pages/Login";
 import { Sidebar } from "./components/Layout/Sidebar";
@@ -8,12 +8,23 @@ import { Tokens } from "./pages/Tokens";
 import { Charts } from "./pages/Charts";
 import { ThemeProvider } from "./context/ThemeContext";
 export function App() {
-  const isAuthenticated = true;
+  
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(
+    sessionStorage.getItem("isAuthenticated") === "true"
+  );
+
+  useEffect(() => {
+    sessionStorage.setItem("isAuthenticated", String(isAuthenticated));
+  }, [isAuthenticated]);
+
   if (!isAuthenticated) {
-    return <ThemeProvider>
-        <Login />
-      </ThemeProvider>;
+    return (
+      <ThemeProvider>
+        <Login setIsAuthenticated={setIsAuthenticated} />
+      </ThemeProvider>
+    );
   }
+
   return <ThemeProvider>
       <Router>
         <div className="flex min-h-screen bg-slate-100 dark:bg-slate-900 transition-colors">
