@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { SearchBar } from "../components/common/SearchBar";
 import { FilterPanel } from "../components/transactions/FilterPanel";
+import { WalletIcon, CoinsIcon, ArrowLeftRightIcon, DollarSignIcon} from "lucide-react";
 import { CopyableAddress } from "../components/tokens/CopyableAddress";
+import { DataCard } from "../components/common/DataCard";
 
 interface Transaction {
   id: string;
@@ -28,6 +30,8 @@ export function Transactions() {
       .catch(error => console.error("Error fetching transactions:", error));
   }, []);
 
+  const totalProfit = transactions.reduce((sum, tx) => sum + (tx.profitBnb ?? 0), 0);
+  const total = transactions.length;
   const totalPages = Math.ceil(transactions.length / ITEMS_PER_PAGE);
   const paginatedTransactions = transactions.slice(
     (currentPage - 1) * ITEMS_PER_PAGE,
@@ -43,6 +47,9 @@ export function Transactions() {
         <SearchBar value={searchQuery} onChange={setSearchQuery} placeholder="Search transactions..." />
         <FilterPanel onDateRangeChange={(start, end) => console.log(start, end)} onProfitRangeChange={(min, max) => console.log(min, max)} onTokenChange={token => console.log(token)} />
       </div>
+
+      <DataCard title="Total Profit" value={totalProfit} icon={<CoinsIcon className="w-5 h-5" />} />
+      <DataCard title="Total Transactions" value={total} icon={<ArrowLeftRightIcon className="w-5 h-5" />} />
 
       {/* Desktop Table View */}
       <div className="bg-white dark:border-slate-700 dark:bg-slate-800 rounded-lg p-2 border border-slate-200 hidden md:block overflow-x-auto">

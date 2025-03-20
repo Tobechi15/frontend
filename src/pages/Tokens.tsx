@@ -3,6 +3,8 @@ import { SearchBar } from "../components/common/SearchBar";
 import { CountdownTimer } from "../components/tokens/CountdownTimer";
 import { CopyableAddress } from "../components/tokens/CopyableAddress";
 import { formatNumber, formatDateTime } from "../utils/formatters";
+import { DataCard } from "../components/common/DataCard";
+import { WalletIcon, CoinsIcon, ArrowLeftRightIcon, DollarSignIcon} from "lucide-react";
 
 interface Token {
   address: string;
@@ -52,6 +54,8 @@ export function Tokens() {
       token.symbol.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const total = filteredTokens.length;
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
@@ -59,6 +63,8 @@ export function Tokens() {
         <CountdownTimer tokenTime={FetchTime} />
       </div>
       <SearchBar value={searchQuery} onChange={setSearchQuery} placeholder="Search tokens..." />
+
+      <DataCard title="Total Transactions" value={total} icon={<ArrowLeftRightIcon className="w-5 h-5" />} />
 
       {loading ? (
         <p className="text-center text-gray-500">Loading tokens...</p>
