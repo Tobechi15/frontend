@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { WalletIcon, CoinsIcon, ArrowLeftRightIcon, DollarSignIcon} from "lucide-react";
+import { WalletIcon, CoinsIcon, ArrowLeftRightIcon, DollarSignIcon } from "lucide-react";
 import { StatusIndicator } from "../components/common/StatusIndicator";
 import { DataCard } from "../components/common/DataCard";
 import { CopyableAddress } from "../components/tokens/CopyableAddress";
@@ -63,7 +63,7 @@ export function Dashboard() {
 
         const ton = tokenData.tokens;
         const tokh = ton.length;
-        setTokens(tokh ? tokh.toString(): "N/A");
+        setTokens(tokh ? tokh.toString() : "N/A");
 
         // Calculate last 24h stats
         calculate24hStats(processedTransactions);
@@ -80,32 +80,37 @@ export function Dashboard() {
   /** Function to calculate transactions in last 24 hours and profit change */
   const calculate24hStats = (allTransactions: Transaction[]) => {
     const now = Date.now();
-    const oneDayMs = 24 * 60 * 60 * 1000;
+    const midnight = new Date();
+    midnight.setHours(0, 0, 0, 0);
+    const yesterdayMidnight = new Date(midnight);
+    yesterdayMidnight.setDate(midnight.getDate() - 1); // Move back one day
 
     console.log("Current Time (ms):", now);
 
     const last24hTransactions = allTransactions.filter((tx) => {
-      const txTime = new Date(tx.timestamp).getTime(); // Convert ISO date to milliseconds
-      console.log(`Tx Time: ${txTime}, Within 24h: ${now - txTime <= oneDayMs}`);
-      return now - txTime <= oneDayMs;
+      const txTime = new Date(tx.timestamp).getTime();
+      return txTime >= midnight.getTime(); // Only include transactions from today's midnight onward
     });
 
     const last48hTransactions = allTransactions.filter((tx) => {
       const txTime = new Date(tx.timestamp).getTime();
-      return now - txTime > oneDayMs && now - txTime <= 2 * oneDayMs;
+      return txTime >= yesterdayMidnight.getTime() && txTime < midnight.getTime();
     });
 
     // Sum up profits
     const totalProfit24h = last24hTransactions.reduce((sum, tx) => sum + (tx.profitBnb || 0), 0);
     const totalProfitYesterday = last48hTransactions.reduce((sum, tx) => sum + (tx.profitBnb || 0), 0);
 
+    console.log(totalProfit24h);
+    console.log(totalProfitYesterday);
     // Calculate profit change percentage
     const profitChange =
-      totalProfitYesterday !== 0
-        ? ((totalProfit24h - totalProfitYesterday) / Math.abs(totalProfitYesterday)) * 100
-        : totalProfit24h > 0
-          ? 100
-          : 0;
+    totalProfitYesterday > 0
+      ? (totalProfit24h / totalProfitYesterday) * 100 // Compare today's profit as a percentage of yesterday's
+      : totalProfit24h > 0
+        ? 100 // If yesterday's profit was 0 and today has profit, it's a 100% increase
+        : 0; // If both are 0, no change
+
 
 
     // Update state
