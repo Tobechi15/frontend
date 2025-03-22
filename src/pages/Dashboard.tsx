@@ -23,15 +23,15 @@ export function Dashboard() {
   const [profitChange24h, setProfitChange24h] = useState<number>(0);
   const [profit24h, setProfit24h] = useState<number>(0);
   const [numtoken, setTokens] = useState<number>(0);
-
+  const urll = 'https://arb-bot-b6wc.onrender.com';
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const [transactionsRes, balanceRes, tokenres] = await Promise.all([
-          fetch("https://arb-bot-rlot.onrender.com/transactions"),
-          fetch("https://arb-bot-rlot.onrender.com/bal"),
-          fetch("https://arb-bot-rlot.onrender.com/tokens"),
+          fetch(`${urll}/transactions`),
+          fetch(`${urll}/bal`),
+          fetch(`${urll}/tokens`),
         ]);
 
 
