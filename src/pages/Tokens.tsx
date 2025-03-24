@@ -30,7 +30,7 @@ export function Tokens() {
   useEffect(() => {
     const fetchTokens = async () => {
       try {
-        const response = await fetch("https://arb-bot-rlot.onrender.com/tokens");
+        const response = await fetch("https://arb-bot-b6wc.onrender.com/tokens");
         if (!response.ok) throw new Error("Failed to fetch tokens");
     
         const data: ApiResponse = await response.json();

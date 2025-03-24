@@ -24,7 +24,7 @@ export function Transactions() {
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
-    fetch("https://arb-bot-rlot.onrender.com/transactions")
+    fetch("https://arb-bot-b6wc.onrender.com/transactions")
       .then(response => response.json())
       .then((data: Transaction[]) => setTransactions(data))
       .catch(error => console.error("Error fetching transactions:", error));

@@ -29,9 +29,9 @@ export function Dashboard() {
     const fetchData = async () => {
       try {
         const [transactionsRes, balanceRes, tokenres] = await Promise.all([
-          fetch(`${urll}/transactions`),
-          fetch(`${urll}/bal`),
-          fetch(`${urll}/tokens`),
+          fetch(`https://arb-bot-b6wc.onrender.com/transactions`),
+          fetch(`https://arb-bot-b6wc.onrender.com/bal`),
+          fetch(`https://arb-bot-b6wc.onrender.com/tokens`),
         ]);
 
 
