@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { PowerIcon } from "lucide-react";
 
-const BOT_URL = "https://arb-bot-rlot.onrender.com/";
+const BOT_URL = "https://arb-bot-b6wc.onrender.com/";
 const WEBHOOK_URL = "YOUR_WEBHOOK_URL_HERE"; // Replace with your actual webhook URL
 
 interface StatusIndicatorProps {
