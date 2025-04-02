@@ -18,108 +18,59 @@ interface Transaction {
 export function Dashboard() {
   const [isRunning, setIsRunning] = useState(false);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [balance, setBalance] = useState<string>("Loading...");
   const [transactions24h, setTransactions24h] = useState<number>(0);
   const [profitChange24h, setProfitChange24h] = useState<number>(0);
   const [profit24h, setProfit24h] = useState<number>(0);
-  const [numtoken, setTokens] = useState<number>(0);
+  const [numTokens, setNumTokens] = useState<number>(0);
+  const [balance, setBalance] = useState<string>("Loading...");
   const urll = 'https://arb-bot-b6wc.onrender.com';
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [transactionsRes, balanceRes, tokenres] = await Promise.all([
-          fetch(`https://arb-bot-b6wc.onrender.com/transactions`),
-          fetch(`https://arb-bot-b6wc.onrender.com/bal`),
-          fetch(`https://arb-bot-b6wc.onrender.com/tokens`),
+        const [transactionsRes, balanceRes, tokensRes, profitRes, yesterdayProfitRes] = await Promise.all([
+          fetch(`${urll}/transactions/24h`),
+          fetch(`${urll}/bal`),
+          fetch(`${urll}/tokens`),
+          fetch(`${urll}/profitBnb/24h`), 
+          fetch(`${urll}/profitBnb/yesterday`)
         ]);
 
-
-        if (!transactionsRes.ok || !balanceRes.ok || !tokenres) {
+        if (!transactionsRes.ok || !balanceRes.ok || !tokensRes.ok || !profitRes.ok || !yesterdayProfitRes.ok) {
           throw new Error("Failed to fetch data");
         }
-        const tokenData = await tokenres.json()
+
         const transactionsData = await transactionsRes.json();
         const balanceData = await balanceRes.json();
+        const tokensData = await tokensRes.json();
+        const profitData = await profitRes.json();
+        const yesterdayProfitData = await yesterdayProfitRes.json();
 
-        if (!Array.isArray(transactionsData)) {
-          throw new Error("Invalid transactions format");
+        setTransactions(transactionsData);
+        setTransactions24h(transactionsData.length);
+        setBalance(balanceData ? balanceData.toString() : "N/A");
+        setNumTokens(tokensData.tokens?.length || 0);
+        setProfit24h(Number(profitData.totalProfitBnb.toFixed(2)));
+
+        // Calculate profit change percentage
+        const totalProfitYesterday = Number(yesterdayProfitData.totalProfitBnb);
+        let profitChange = 0;
+        if (totalProfitYesterday > 0) {
+          profitChange = ((profitData.totalProfitBnb - totalProfitYesterday) / totalProfitYesterday) * 100;
+        } else if (profitData.totalProfitBnb > 0) {
+          profitChange = 100;
         }
 
-        const processedTransactions = transactionsData.map((tx) => ({
-          id: tx.id || Math.random(),
-          tokenSymbol: tx.tokenSymbol || "Unknown",
-          tokenName: tx.tokenName || "Unknown",
-          buyPrice: Number(tx.buyPrice) || 0,
-          sellPrice: Number(tx.sellPrice) || 0,
-          profit: Number(tx.profit) || 0,
-          profitBnb: Number(tx.profitBnb) || 0,
-          timestamp: tx.timestamp || Date.now(),
-        }));
+        setProfitChange24h(profitChange);
 
-        setTransactions(processedTransactions.slice(0, 5));
-
-        setBalance(balanceData ? balanceData.toString() : "N/A");
-
-        const ton = tokenData.tokens;
-        const tokh = ton.length;
-        setTokens(tokh ? tokh.toString() : "N/A");
-
-        // Calculate last 24h stats
-        calculate24hStats(processedTransactions);
       } catch (error) {
         console.error("Error fetching data:", error);
-        setTransactions([]);
         setBalance("Error");
       }
     };
 
     fetchData();
   }, []);
-
-  /** Function to calculate transactions in last 24 hours and profit change */
-  const calculate24hStats = (allTransactions: Transaction[]) => {
-    const now = Date.now();
-    const midnight = new Date();
-    midnight.setHours(0, 0, 0, 0);
-    const yesterdayMidnight = new Date(midnight);
-    yesterdayMidnight.setDate(midnight.getDate() - 1); // Move back one day
-
-    console.log("Current Time (ms):", now);
-
-    const last24hTransactions = allTransactions.filter((tx) => {
-      const txTime = new Date(tx.timestamp).getTime();
-      return txTime >= midnight.getTime(); // Only include transactions from today's midnight onward
-    });
-
-    const last48hTransactions = allTransactions.filter((tx) => {
-      const txTime = new Date(tx.timestamp).getTime();
-      return txTime >= yesterdayMidnight.getTime() && txTime < midnight.getTime();
-    });
-
-    // Sum up profits
-    const totalProfit24h = last24hTransactions.reduce((sum, tx) => sum + (tx.profitBnb || 0), 0);
-    const totalProfitYesterday = last48hTransactions.reduce((sum, tx) => sum + (tx.profitBnb || 0), 0);
-
-    console.log(totalProfit24h);
-    console.log(totalProfitYesterday);
-    // Calculate profit change percentage
-    const profitChange =
-      totalProfitYesterday > 0
-        ? (totalProfit24h / totalProfitYesterday) * 100 // Compare today's profit as a percentage of yesterday's
-        : totalProfit24h > 0
-          ? 100 // If yesterday's profit was 0 and today has profit, it's a 100% increase
-          : 0; // If both are 0, no change
-
-
-
-    // Update state
-    setTransactions24h(last24hTransactions.length);
-    setProfitChange24h(profitChange);
-    const roundedProfit = Number(totalProfit24h.toFixed(2));
-    setProfit24h(roundedProfit);
-  };
-
 
   return (
     <div className="space-y-6">
@@ -137,7 +88,7 @@ export function Dashboard() {
               icon={<WalletIcon className="w-5 h-5" />}
               change={{ value: 2.5, isPositive: true }}
             />
-            <DataCard title="Tokens Fetched" value={numtoken} icon={<CoinsIcon className="w-5 h-5" />} />
+            <DataCard title="Tokens Fetched" value={numTokens} icon={<CoinsIcon className="w-5 h-5" />} />
             <DataCard title="24h Transactions" value={transactions24h} icon={<ArrowLeftRightIcon className="w-5 h-5" />} />
             <DataCard
               title="24h Profit"
@@ -202,8 +153,6 @@ export function Dashboard() {
                     <div className={`text-right ${tx.profit >= 0 ? "text-green-500" : "text-red-500"}`}>
                       {tx.profit.toFixed(2)}
                     </div>
-                    <div className="text-slate-500">Profit (BNB)</div>
-                    <div className="text-right dark:text-white">{tx.profitBnb.toFixed(6)} BNB</div>
                   </div>
                 </div>
               ))}
@@ -213,7 +162,6 @@ export function Dashboard() {
       ) : (
         <StatusIndicator isRunning={isRunning} setIsRunning={setIsRunning} />
       )}
-
     </div>
   );
 }
