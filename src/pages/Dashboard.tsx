@@ -125,7 +125,7 @@ export function Dashboard() {
                       <td className="text-right">${tx.buyPrice.toFixed(2)}</td>
                       <td className="text-right">${tx.sellPrice.toFixed(2)}</td>
                       <td className={`text-right ${tx.profitUsd >= 0 ? "text-green-500" : "text-red-500"}`}>
-                        {tx.profit.toFixed(2)}
+                        {tx.profitUsd.toFixed(2)}
                       </td>
                       <td className="text-right">{tx.profitBnb.toFixed(6)} BNB</td>
                       <td className="text-right text-slate-400">
