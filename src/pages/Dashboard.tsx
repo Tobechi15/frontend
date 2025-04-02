@@ -117,7 +117,7 @@ export function Dashboard() {
                   </tr>
                 </thead>
                 <tbody className="dark:text-white">
-                  {transactions.map((tx) => (
+                  {transactions.slice(0, 10).map((tx) => (
                     <tr key={tx.id} className="border-t border-slate-200 dark:border-slate-700">
                       <td className="py-4">{tx.tokenSymbol}</td>
                       <td className="py-4"><CopyableAddress address={tx.tokenName} /></td>
@@ -136,7 +136,7 @@ export function Dashboard() {
               </table>
             </div>
             <div className="md:hidden space-y-4">
-              {transactions.map((tx) => (
+              {transactions.slice(0, 10).map((tx) => (
                 <div key={tx.id} className="bg-white border-slate-200 dark:bg-slate-700/50 rounded-lg p-4">
                   <div className="flex justify-between items-start mb-2">
                     <span className="font-medium dark:text-white">{tx.tokenSymbol}</span>
