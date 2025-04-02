@@ -13,6 +13,7 @@ interface Transaction {
   sellPrice: number;
   profit: number;
   profitBnb: number;
+  profitUsd: number;
   timestamp: string;
 }
 
@@ -100,7 +101,7 @@ export function Transactions() {
                     <td className="text-right"><CopyableAddress address={tx.tokenName} /></td>
                     <td className="text-right">${tx.buyPrice.toFixed(2)}</td>
                     <td className="text-right">${tx.sellPrice.toFixed(2)}</td>
-                    <td className={`text-right ${tx.profit >= 0 ? "text-green-500" : "text-red-500"}`}>{tx.profit.toFixed(2)} USD</td>
+                    <td className={`text-right ${tx.profitUsd >= 0 ? "text-green-500" : "text-red-500"}`}>{tx.profit.toFixed(2)} USD</td>
                     <td className={`text-right ${tx.profitBnb >= 0 ? "text-green-500" : "text-red-500"}`}>{tx.profitBnb.toFixed(3)} BNB</td>
                     <td className="text-right text-slate-400">{new Date(tx.timestamp).toLocaleString()}</td>
                   </tr>
@@ -125,7 +126,7 @@ export function Transactions() {
                   <div className="text-slate-500">Sell Price</div>
                   <div className="text-right dark:text-white">${tx.sellPrice.toFixed(2)}</div>
                   <div className="text-slate-500">Profit (USD)</div>
-                  <div className={`text-right ${tx.profit >= 0 ? "text-green-500" : "text-red-500"}`}>{tx.profit.toFixed(2)} USD</div>
+                  <div className={`text-right ${tx.profitUsd >= 0 ? "text-green-500" : "text-red-500"}`}>{tx.profit.toFixed(2)} USD</div>
                   <div className="text-slate-500">Profit (BNB)</div>
                   <div className={`text-right ${tx.profitBnb >= 0 ? "text-green-500" : "text-red-500"}`}>{tx.profitBnb.toFixed(3)} BNB</div>
                 </div>

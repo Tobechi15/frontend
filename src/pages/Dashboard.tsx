@@ -12,6 +12,7 @@ interface Transaction {
   sellPrice: number;
   profit: number;
   profitBnb: number;
+  profitUsd: number;
   timestamp: number;
 }
 
@@ -123,7 +124,7 @@ export function Dashboard() {
                       <td className="py-4"><CopyableAddress address={tx.tokenName} /></td>
                       <td className="text-right">${tx.buyPrice.toFixed(2)}</td>
                       <td className="text-right">${tx.sellPrice.toFixed(2)}</td>
-                      <td className={`text-right ${tx.profit >= 0 ? "text-green-500" : "text-red-500"}`}>
+                      <td className={`text-right ${tx.profitUsd >= 0 ? "text-green-500" : "text-red-500"}`}>
                         {tx.profit.toFixed(2)}
                       </td>
                       <td className="text-right">{tx.profitBnb.toFixed(6)} BNB</td>
@@ -150,8 +151,8 @@ export function Dashboard() {
                     <div className="text-slate-500">Sell Price</div>
                     <div className="text-right dark:text-white">${tx.sellPrice.toFixed(2)}</div>
                     <div className="text-slate-500">Profit</div>
-                    <div className={`text-right ${tx.profit >= 0 ? "text-green-500" : "text-red-500"}`}>
-                      {tx.profit.toFixed(2)}
+                    <div className={`text-right ${tx.profitUsd >= 0 ? "text-green-500" : "text-red-500"}`}>
+                      {tx.profitUsd.toFixed(2)}
                     </div>
                   </div>
                 </div>
