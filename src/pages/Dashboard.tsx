@@ -102,7 +102,7 @@ export function Dashboard() {
             />
           </div>
 
-          <div className="bg-transparent md:bg-white dark:border-slate-700 dark:bg-slate-800 rounded-lg p-2 md:dark:p-6 md:border md:border-slate-200">
+          <div className="bg-transparent md:bg-white dark:border-slate-700 dark:bg-slate-800 rounded-lg p-2 md:p-4 md:dark:p-6 md:border md:border-slate-200">
             <h2 className="text-lg font-semibold dark:text-white mb-4">Recent Transactions</h2>
             <div className="hidden md:block overflow-x-auto">
               <table className="w-full">

@@ -73,7 +73,7 @@ export function Tokens() {
       ) : (
         <>
           {/* Desktop Table View */}
-          <div className="bg-white dark:bg-slate-800 dark:border-slate-700 rounded-lg p-2 border border-slate-200 hidden md:block overflow-x-auto">
+          <div className="bg-white dark:bg-slate-800 dark:border-slate-700 rounded-lg p-2 md:p-4 border border-slate-200 hidden md:block overflow-x-auto">
             <table className="w-full">
               <thead>
                 <tr className="text-slate-400 text-sm">
@@ -87,7 +87,7 @@ export function Tokens() {
               </thead>
               <tbody>
                 {filteredTokens.map((token, index) => (
-                  <tr key={index} className="border-t border-slate-700">
+                  <tr key={index} className="border-t border-slate-300 dark:border-slate-700">
                     <td className="py-4 font-medium dark:text-white">{token.symbol}</td>
                     <td className="py-4 dark:text-white">{token.name}</td>
                     <td className="py-4">

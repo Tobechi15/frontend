@@ -81,7 +81,7 @@ export function Transactions() {
       ) : (
         <>
           {/* Desktop Table View */}
-          <div className="bg-white dark:border-slate-700 dark:bg-slate-800 rounded-lg p-2 border border-slate-200 hidden md:block overflow-x-auto">
+          <div className="bg-white dark:border-slate-700 dark:bg-slate-800 rounded-lg p-2 md:p-4 border border-slate-200 hidden md:block overflow-x-auto">
             <table className="w-full">
               <thead>
                 <tr className="text-slate-400 text-sm">
