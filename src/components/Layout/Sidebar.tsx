@@ -67,7 +67,7 @@ export function Sidebar() {
   return (
     <>
       {/* Navbar - Always Visible */}
-      <nav className="fixed top-0 left-0 right-0 h-16 bg-white dark:bg-slate-800 text-slate-900 dark:text-white border-b border-gray-200 dark:border-gray-700 z-[60]">
+      <nav className="fixed top-0 left-0 right-0 h-18 bg-white dark:bg-slate-800 text-slate-900 dark:text-white border-b border-gray-200 dark:border-gray-700 z-[60]">
         <div className="h-full flex items-center justify-between  px-4 sm:px-6">
           {/* Mobile Menu Button */}
           <button
