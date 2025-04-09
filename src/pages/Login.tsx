@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { EyeIcon, EyeOffIcon, SunIcon, MoonIcon } from "lucide-react";
+import { useTheme } from "../context/ThemeContext";
 
 interface LoginProps {
   setIsAuthenticated: (value: boolean) => void;
@@ -11,6 +12,7 @@ export function Login({ setIsAuthenticated }: LoginProps) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const { ThemeToggle } = useTheme();
 
   useEffect(() => {
     const authStatus = sessionStorage.getItem("isAuthenticated");
@@ -30,19 +32,10 @@ export function Login({ setIsAuthenticated }: LoginProps) {
   };
 
   return (
-    <main className={`${isDarkMode ? "dark" : ""}`}>
+    <main className={`${isDarkMode ? "dark:bg-slate-900" : "bg-white"}`}>
       <div className="min-h-screen w-full bg-white dark:bg-slate-900 flex items-center justify-center p-4 transition-colors duration-300">
         <div className="absolute top-4 right-4">
-          <button
-            onClick={() => setIsDarkMode(!isDarkMode)}
-            className="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors"
-          >
-            {isDarkMode ? (
-              <SunIcon className="w-5 h-5 text-yellow-400" />
-            ) : (
-              <MoonIcon className="w-5 h-5 text-slate-600" />
-            )}
-          </button>
+        <ThemeToggle />
         </div>
         <div className="w-full max-w-md">
           <div className="bg-white dark:bg-slate-800 rounded-lg p-8 shadow-xl border border-slate-200 dark:border-slate-700 transition-colors">
