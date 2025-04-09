@@ -7,8 +7,8 @@ import { Transactions } from "./pages/Transactions";
 import { Tokens } from "./pages/Tokens";
 import { Charts } from "./pages/Charts";
 import { ThemeProvider } from "./context/ThemeContext";
+
 export function App() {
-  
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(
     sessionStorage.getItem("isAuthenticated") === "true"
   );
@@ -25,10 +25,11 @@ export function App() {
     );
   }
 
-  return <ThemeProvider>
+  return (
+    <ThemeProvider>
       <Router>
         <div className="flex min-h-screen bg-slate-100 dark:bg-slate-900 transition-colors">
-          <Sidebar />
+          <Sidebar setIsAuthenticated={setIsAuthenticated} />
           <main className="flex-1 ml-0 mt-16 lg:ml-64 p-6">
             <Routes>
               <Route path="/" element={<Dashboard />} />
@@ -39,5 +40,6 @@ export function App() {
           </main>
         </div>
       </Router>
-    </ThemeProvider>;
+    </ThemeProvider>
+  );
 }

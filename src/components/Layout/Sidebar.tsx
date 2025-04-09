@@ -12,11 +12,20 @@ import {
 import { useTheme } from "../../context/ThemeContext";
 import { Link } from "react-router-dom";
 
-export function Sidebar() {
+interface SidebarProps {
+  setIsAuthenticated: (value: boolean) => void;
+}
+
+export function Sidebar({ setIsAuthenticated }: SidebarProps) {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const sidebarRef = useRef<HTMLDivElement>(null);
   const { ThemeToggle } = useTheme();
+
+  const handleLogout = () => {
+    sessionStorage.removeItem("isAuthenticated");
+    setIsAuthenticated(false);
+  };
 
   const navItems = [
     { icon: HomeIcon, label: "Dashboard", path: "/" },
@@ -117,7 +126,7 @@ export function Sidebar() {
             ))}
           </nav>
           <div className="p-4 border-t border-slate-200 dark:border-slate-700">
-            <button className="flex items-center w-full px-4 py-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white rounded-md transition-colors">
+            <button onClick={handleLogout} className="flex items-center w-full px-4 py-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white rounded-md transition-colors">
               <LogOutIcon className="w-5 h-5" />
               {!isCollapsed && <span className="ml-3">Logout</span>}
             </button>
