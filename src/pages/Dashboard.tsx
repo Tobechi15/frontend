@@ -96,7 +96,7 @@ export function Dashboard() {
               value={`${profit24h} BNB`}
               icon={<DollarSignIcon className="w-5 h-5" />}
               change={{
-                value: Math.abs(profitChange24h),
+                value: Math.abs(Number(profitChange24h.toFixed(2))),
                 isPositive: profitChange24h >= 0,
               }}
             />
