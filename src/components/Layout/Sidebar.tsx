@@ -67,7 +67,7 @@ export function Sidebar() {
   return (
     <>
       {/* Navbar - Always Visible */}
-      <nav className="fixed top-0 left-0 right-0 h-18 bg-white dark:bg-slate-800 text-slate-900 dark:text-white border-b border-gray-200 dark:border-gray-700 z-[60]">
+      <nav className="fixed top-0 left-0 right-0 h-16 bg-white dark:bg-slate-800 text-slate-900 dark:text-white border-b border-gray-200 dark:border-gray-700 z-[60]">
         <div className="h-full flex items-center justify-between  px-4 sm:px-6">
           {/* Mobile Menu Button */}
           <button
@@ -95,7 +95,7 @@ export function Sidebar() {
           lg:translate-x-0 z-40 border-r border-slate-200 dark:border-slate-700`}
       >
         <div className="flex flex-col h-full">
-          <div className="p-4 border-b border-slate-200 dark:border-slate-700">
+          <div className="px-4 pt-2 border-b border-slate-200 dark:border-slate-700">
             <div className="flex items-center justify-between">
               <h1 className={`font-bold ${isCollapsed ? "text-center" : "text-xl"}`}>
                 {isCollapsed ? "AB" : "Arbitrage Bot"}
@@ -103,7 +103,7 @@ export function Sidebar() {
               {!isCollapsed && <ThemeToggle />}
             </div>
           </div>
-          <nav className="flex-1 py-4">
+          <nav className="flex-1 mt-8 py-4">
             {navItems.map((item) => (
               <Link
                 key={item.label}

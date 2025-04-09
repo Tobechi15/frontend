@@ -50,7 +50,7 @@ export function StatusIndicator({ isRunning, setIsRunning }: StatusIndicatorProp
 
   if (!isRunning) {
     return (
-      <div className="flex items-center justify-center mt-[-115px] h-screen bg-white dark:bg-slate-800">
+      <div className="flex items-center justify-center mt-[-115px] h-screen bg-slate-100 dark:bg-slate-800">
         <button
           onClick={handleToggle}
           disabled={loading}
