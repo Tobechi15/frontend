@@ -133,7 +133,7 @@ export function Charts() {
               </div>
               <div className="flex justify-between">
                 <span className="text-slate-500">BNB</span>
-                <span className="dark:text-white font-medium">{projectedProfit?.toFixed(2)} BNB</span>
+                <span className="dark:text-white font-medium">{currentProfitBnb?.toFixed(4)} BNB</span>
               </div>
             </div>
           </div>
@@ -142,7 +142,7 @@ export function Charts() {
             <div className="space-y-2">
               <div className="flex justify-between">
                 <span className="text-slate-500">USD</span>
-                <span className="text-green-500 font-medium">${currentProfitBnb?.toFixed(4)}</span>
+                <span className="text-green-500 font-medium">${projectedProfit?.toFixed(2)}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-slate-500">BNB</span>
