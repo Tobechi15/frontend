@@ -64,7 +64,7 @@ export function Tokens() {
       </div>
       <SearchBar value={searchQuery} onChange={setSearchQuery} placeholder="Search tokens..." />
 
-      <DataCard title="Total Transactions" value={total} icon={<ArrowLeftRightIcon className="w-5 h-5" />} />
+      <DataCard title="Total Tokens" value={total} icon={<ArrowLeftRightIcon className="w-5 h-5" />} />
 
       {loading ? (
         <p className="text-center text-gray-500">Loading tokens...</p>
