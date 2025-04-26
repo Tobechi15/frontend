@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, AreaChart, Bar, BarChart } from "recharts";
+import {XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, AreaChart, Bar, BarChart } from "recharts";
 import { TimeRangeSelector } from "../components/charts/TimeRangeSelector";
 import { ChartToggle } from "../components/charts/ChartToggle";
 
@@ -72,13 +72,6 @@ export function Charts() {
           projectedBnbProfit: Number((cumulativeBNB * 1.2).toFixed(4)) // 20% increase for projections
         };
       });
-
-      let USD = 0;
-      let BNB = 0;
-      let totaltimeProfit = 0;
-      let totaltimeProfitBnb = 0;
-      let totaltimeProjProfit = 0;
-      let totaltimeProjProfitBnb = 0;
 
       const groupedData = new Map<string, { profit: number; bnbProfit: number }>();
 
