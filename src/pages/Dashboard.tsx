@@ -51,7 +51,7 @@ export function Dashboard() {
         setTransactions24h(transactionsData.length);
         setBalance(balanceData ? balanceData.toString() : "N/A");
         setNumTokens(tokensData.tokens?.length || 0);
-        setProfit24h(Number(profitData.totalProfitBnb.toFixed(2)));
+        setProfit24h(Number(profitData.totalProfitBnb.toFixed(3)));
 
         // Calculate profit change percentage
         const totalProfitYesterday = Number(yesterdayProfitData.totalProfitBnb);
