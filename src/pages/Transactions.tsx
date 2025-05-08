@@ -14,7 +14,9 @@ interface Transaction {
   profit: number;
   profitBnb: number;
   profitUsd: number;
+  realbndProfit: number;
   timestamp: string;
+  status: string;
 }
 
 const ITEMS_PER_PAGE = 10;
@@ -91,6 +93,8 @@ export function Transactions() {
                   <th className="text-right pb-4">Sell Price</th>
                   <th className="text-right pb-4">Profit (USD)</th>
                   <th className="text-right pb-4">Profit (BNB)</th>
+                  <th className="text-right pb-4">Status</th>
+                  <th className="text-right pb-4">Real Profit (BNB)</th>
                   <th className="text-right pb-4">Time</th>
                 </tr>
               </thead>
@@ -103,6 +107,8 @@ export function Transactions() {
                     <td className="text-right">${tx.sellPrice.toFixed(2)}</td>
                     <td className={`text-right ${tx.profitUsd >= 0 ? "text-green-500" : "text-red-500"}`}>{tx.profitUsd?.toFixed(2)} USD</td>
                     <td className={`text-right ${tx.profitBnb >= 0 ? "text-green-500" : "text-red-500"}`}>{tx.profitBnb.toFixed(3)} BNB</td>
+                    <td className={`text-right ${tx?.status === "success" ? "text-green-500" : "text-red-500"}`}>{tx?.status}</td>
+                    <td className={`text-right ${tx?.realbndProfit >= 0 ? "text-green-500" : "text-red-500"}`}>{tx?.realbndProfit?.toFixed(3)} BNB</td>
                     <td className="text-right text-slate-400">{new Date(tx.timestamp).toLocaleString()}</td>
                   </tr>
                 ))}
@@ -119,6 +125,8 @@ export function Transactions() {
                   <span className="dark:text-slate-400 text-sm">{new Date(tx.timestamp).toLocaleString()}</span>
                 </div>
                 <div className="grid grid-cols-2 gap-2 text-sm">
+                  <div className="text-slate-500">Status</div>
+                  <div className={`flex flex-row-reverse text-right `}><div className={`flex-none text-white p-2 rounded-full ${tx?.status === "success" ? "bg-green-500" : "bg-red-500"}`}>{tx?.status}</div></div>
                   <div className="text-slate-500">Address</div>
                   <div className="text-right dark:text-white"><CopyableAddress address={tx.tokenName} /></div>
                   <div className="text-slate-500">Buy Price</div>
@@ -129,6 +137,8 @@ export function Transactions() {
                   <div className={`text-right ${tx.profitUsd >= 0 ? "text-green-500" : "text-red-500"}`}>{tx.profitUsd?.toFixed(2)} USD</div>
                   <div className="text-slate-500">Profit (BNB)</div>
                   <div className={`text-right ${tx.profitBnb >= 0 ? "text-green-500" : "text-red-500"}`}>{tx.profitBnb.toFixed(3)} BNB</div>
+                  <div className="text-slate-500">Real Profit (BNB)</div>
+                  <div className={`text-right ${tx?.realbndProfit >= 0 ? "text-green-500" : "text-red-500"}`}>{tx?.realbndProfit?.toFixed(3)} BNB</div>
                 </div>
               </div>
             ))}

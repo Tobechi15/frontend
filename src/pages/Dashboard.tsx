@@ -13,6 +13,7 @@ interface Transaction {
   profit: number;
   profitBnb: number;
   profitUsd: number;
+  realbndProfit: number;
   timestamp: number;
 }
 
@@ -118,7 +119,9 @@ export function Dashboard() {
                   </tr>
                 </thead>
                 <tbody className="dark:text-white">
+                  
                   {transactions.slice(0, 6).map((tx) => (
+                    console.log(tx),
                     <tr key={tx.id} className="border-t border-slate-200 dark:border-slate-700">
                       <td className="py-4">{tx.tokenSymbol}</td>
                       <td className="py-4"><CopyableAddress address={tx.tokenName} /></td>
