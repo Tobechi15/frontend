@@ -118,6 +118,7 @@ export function Transactions() {
 
           {/* Mobile Card View */}
           <div className="md:hidden space-y-4">
+            
             {transactions.map(tx => (
               <div key={tx._id} className="bg-white dark:border-slate-700 dark:bg-slate-800 rounded-lg p-4 border border-slate-200">
                 <div className="flex justify-between items-start mb-3">
@@ -126,7 +127,7 @@ export function Transactions() {
                 </div>
                 <div className="grid grid-cols-2 gap-2 text-sm">
                   <div className="text-slate-500">Status</div>
-                  <div className={`flex flex-row-reverse text-right `}><div className={`flex-none text-white p-2 rounded-full ${tx?.status === "success" ? "bg-green-500" : "bg-red-500"}`}>{tx?.status}</div></div>
+                  <div className={`flex flex-row-reverse text-right `}><div className={`flex-none text-white px-4 rounded-xl ${tx?.status === "success" ? "bg-green-500" : "bg-red-500"}`}>{tx.status.charAt(0).toUpperCase() + tx.status.slice(1)}</div></div>
                   <div className="text-slate-500">Address</div>
                   <div className="text-right dark:text-white"><CopyableAddress address={tx.tokenName} /></div>
                   <div className="text-slate-500">Buy Price</div>
